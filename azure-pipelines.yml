@@ -11,7 +11,7 @@ variables:
   resourceGroup: 'keycloak'
   
   # --- Container Registry & App Settings - UPDATE THESE ---
-  containerRegistry: 'devopstest1.azurecr.io'
+  containerRegistry: 'devopstest1'
   containerAppName: 'keycloak-container' # IMPORTANT: This must match the name of your app in Azure
   imageRepository: 'keycloak-azure'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
