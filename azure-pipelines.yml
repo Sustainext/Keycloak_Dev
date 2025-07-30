@@ -17,7 +17,7 @@ variables:
   dockerfilePath: 'keycloak-26.3.1/Dockerfile'
 
   # The hostname of your container app.
-  # KC_HOSTNAME: 'keycloak-container.jollyhill-e899b4ae.centralindia.azurecontainerapps.io'
+  KC_HOSTNAME: 'keycloak-container.jollyhill-e899b4ae.centralindia.azurecontainerapps.io'
 
   # --- Pipeline Variables ---
   tag: '$(Build.BuildId)'
@@ -54,27 +54,30 @@ stages:
     # NOTE: The step for setting secrets with Azure CLI has been removed.
     # This pipeline now assumes secrets already exist in the Container App.
     
-    - task: AzureContainerApps@1
-      displayName: 'Deploy to Container App'
-      inputs:
-        azureSubscription: $(azureSubscription)
-        containerAppName: $(containerAppName)
-        resourceGroup: $(resourceGroup)
-        imageToDeploy: '$(containerRegistry)/$(imageRepository):$(tag)'
+    # CORRECTED YAML - PLEASE USE THIS EXACT BLOCK
 
-      registries:
-      - server: $(containerRegistry)
-        identity: 'system'
-        
-        # This section tells the container which environment variables to create.
-        # For secrets, 'secretref:' points to the NAME/KEY of the secret you
-        # created manually in the Azure Portal.
-      environmentVariables: |
-        KC_BOOTSTRAP_ADMIN_USERNAME=admin
-        KC_BOOTSTRAP_ADMIN_PASSWORD=secretref:keycloak-admin-password
-        KC_DB_URL=secretref:db-url
-        KC_DB_USERNAME=secretref:dbuser
-        KC_DB_PASSWORD=secretref:dbpass
-        KC_HTTP_ENABLED=true
-        KC_PROXY_HEADERS=x-forwarded
-        KC_HOSTNAME=keycloak-container.jollyhill-e899b4ae.centralindia.azurecontainerapps.io
+- task: AzureContainerApps@1
+  displayName: 'Deploy to Container App'
+  inputs:
+    azureSubscription: $(azureSubscription)
+    containerAppName: $(containerAppName)
+    resourceGroup: $(resourceGroup)
+    imageToDeploy: '$(containerRegistry)/$(imageRepository):$(tag)'
+    
+  # 'registries' is NOT under 'inputs'. It is at the same level.
+  registries:
+    # The '-' starts a list item.
+    # 'server' and 'identity' are properties of this same list item.
+    - server: $(containerRegistry)
+      identity: 'system' 
+
+  # The environmentVariables block also lines up with 'inputs' and 'registries'.
+  environmentVariables: |
+    KC_BOOTSTRAP_ADMIN_USERNAME=admin
+    KC_BOOTSTRAP_ADMIN_PASSWORD=secretref:keycloak-admin-password
+    KC_DB_URL=secretref:db-url
+    KC_DB_USERNAME=secretref:dbuser
+    KC_DB_PASSWORD=secretref:dbpass
+    KC_HTTP_ENABLED=true
+    KC_PROXY_HEADERS=xforwarded
+    KC_HOSTNAME=$(KC_HOSTNAME)
