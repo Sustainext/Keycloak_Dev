@@ -61,6 +61,10 @@ stages:
         containerAppName: $(containerAppName)
         resourceGroup: $(resourceGroup)
         imageToDeploy: '$(containerRegistry)/$(imageRepository):$(tag)'
+
+        registries:
+          - server: $(containerRegistry)
+            identity: 'system'
         
         # This section tells the container which environment variables to create.
         # For secrets, 'secretref:' points to the NAME/KEY of the secret you
