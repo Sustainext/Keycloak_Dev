@@ -11,7 +11,7 @@ COPY --from=builder /opt/keycloak/ /opt/keycloak/
 
 
 ENV KC_HTTP_ENABLED=true
-ENV KC_PROXY_HEADERS=x-forwarded
+ENV KC_PROXY_HEADERS=xforwarded
 
 
 EXPOSE 8080
