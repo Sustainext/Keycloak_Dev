@@ -69,12 +69,12 @@ stages:
         # This section tells the container which environment variables to create.
         # For secrets, 'secretref:' points to the NAME/KEY of the secret you
         # created manually in the Azure Portal.
-        environmentVariables: |
-          KC_BOOTSTRAP_ADMIN_USERNAME=admin
-          KC_BOOTSTRAP_ADMIN_PASSWORD=secretref:keycloak-admin-password
-          KC_DB_URL=secretref:db-url
-          KC_DB_USERNAME=secretref:dbuser
-          KC_DB_PASSWORD=secretref:dbpass
-          KC_HTTP_ENABLED=true
-          KC_PROXY_HEADERS=x-forwarded
-          KC_HOSTNAME=keycloak-container.jollyhill-e899b4ae.centralindia.azurecontainerapps.io
+      environmentVariables: |
+        KC_BOOTSTRAP_ADMIN_USERNAME=admin
+        KC_BOOTSTRAP_ADMIN_PASSWORD=secretref:keycloak-admin-password
+        KC_DB_URL=secretref:db-url
+        KC_DB_USERNAME=secretref:dbuser
+        KC_DB_PASSWORD=secretref:dbpass
+        KC_HTTP_ENABLED=true
+        KC_PROXY_HEADERS=x-forwarded
+        KC_HOSTNAME=keycloak-container.jollyhill-e899b4ae.centralindia.azurecontainerapps.io
