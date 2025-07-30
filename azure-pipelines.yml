@@ -17,7 +17,7 @@ variables:
   dockerfilePath: 'keycloak-26.3.1/Dockerfile'
 
   # The hostname of your container app.
-  KC_HOSTNAME: 'keycloak-container.jollyhill-e899b4ae.centralindia.azurecontainerapps.io'
+  # KC_HOSTNAME: 'keycloak-container.jollyhill-e899b4ae.centralindia.azurecontainerapps.io'
 
   # --- Pipeline Variables ---
   tag: '$(Build.BuildId)'
@@ -73,4 +73,4 @@ stages:
           KC_DB_PASSWORD=secretref:dbpass
           KC_HTTP_ENABLED=true
           KC_PROXY_HEADERS=x-forwarded
-          KC_HOSTNAME=$(KC_HOSTNAME)
+          KC_HOSTNAME=keycloak-container.jollyhill-e899b4ae.centralindia.azurecontainerapps.io
