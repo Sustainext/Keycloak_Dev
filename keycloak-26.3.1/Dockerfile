@@ -1,42 +1,19 @@
-FROM eclipse-temurin:17-jdk
- 
+FROM quay.io/keycloak/keycloak:24.0.4 AS builder
+
 WORKDIR /opt/keycloak
- 
-COPY . .
- 
-ENV PATH="/opt/keycloak/bin:$PATH"
- 
 
 
-# ✅ Build-time configs
-ENV KC_DB=postgres
-ENV KC_HTTP_RELATIVE_PATH=/
+RUN /opt/keycloak/bin/kc.sh build --db=postgres
 
 
-# Build Keycloak for production mode
-# RUN kc.sh build --db=postgres
-RUN kc.sh build  
- 
+FROM quay.io/keycloak/keycloak:24.0.4
+COPY --from=builder /opt/keycloak/ /opt/keycloak/
+
+
+ENV KC_HTTP_ENABLED=true
+ENV KC_PROXY_HEADERS=x-forwarded
+
+
 EXPOSE 8080
-# Start in production mode using PostgreSQL
-CMD kc.sh start --optimized \
-#   --db=postgres \
-  --db-url-host=$DBHOST \
-  --db-url-database=$DBNAME \
-  --db-username=$DBUSER \
-  --db-password=$DBPASS \
-  --hostname=$HOSTNAME \
-  --hostname-strict=false \
-  --http-enabled=true \
-  --http-port=8080 
 
-
-# CMD kc.sh start --optimized \
-#   --db-url-host=postgres \
-#   --db-url-database=$DBNAME \
-#   --db-username=$DBUSER \
-#   --db-password=$DBPASS \
-#   --hostname-strict=false \
-#   --http-enabled=true \
-#   --http-port=8080
- 
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start"]
