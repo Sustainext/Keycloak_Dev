@@ -1,0 +1,8 @@
+.env
+*.log
+__pycache__/
+*.pyc
+.idea/
+.vscode/
+keycloak_data/
+postgres_data/
